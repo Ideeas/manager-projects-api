@@ -11,6 +11,18 @@ export class ProjectsService {
     private projetctsRepository: Repository<Project>,
   ) {}
 
+  async list(): Promise<Project[]> {
+    try {
+      const projects = this.projetctsRepository.find();
+      if (projects !== undefined) return projects;
+      throw new BadRequestException(
+        'Ocorreu um erro ao tentar adicionar o projeto. Tente novamente!',
+      );
+    } catch (erro) {
+      throw new BadRequestException(erro);
+    }
+  }
+
   async add(body: AddProjectDto): Promise<Project> {
     try {
       const project = this.projetctsRepository.create(body);
